@@ -306,7 +306,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';

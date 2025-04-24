@@ -332,12 +332,12 @@ export default function LoginPage() {
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // reCAPTCHA verifier setup (invisible)
+  
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
         size: 'invisible',
-        callback: (response: any) => {
+        callback: () => {
           console.log('reCAPTCHA resolved');
         },
       });
@@ -440,7 +440,7 @@ export default function LoginPage() {
         )}
       </div>
 
-      {/* reCAPTCHA container (invisible) */}
+     
       <div id="recaptcha-container"></div>
     </div>
   );

@@ -3,11 +3,6 @@
 
 //with Recaptcha
 
-
-
-
-
-
 // 'use client';
 
 // import { useState } from 'react';
@@ -79,87 +74,90 @@
 // }
 
 
+
+
+
 //with recaptcha and country code
 
-'use client';
+// 'use client';
 
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'; 
+// import { useState } from 'react';
+// import toast from 'react-hot-toast';
+// import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'; 
 
-export default function LoginPage() {
-    const [phone, setPhone] = useState<string | undefined>('');
+// export default function LoginPage() {
+//     const [phone, setPhone] = useState<string | undefined>('');
 
-  const [loading, setLoading] = useState(false);
+//   const [loading, setLoading] = useState(false);
   
 
-  const handleLogin = async () => {
-    if (!phone) {
-      toast.error('Please enter your phone number');
-      return;
-    }
+//   const handleLogin = async () => {
+//     if (!phone) {
+//       toast.error('Please enter your phone number');
+//       return;
+//     }
 
    
-    if (!isValidPhoneNumber(phone)) {
-      toast.error('Please enter a valid phone number');
-      return;
-    }
+//     if (!isValidPhoneNumber(phone)) {
+//       toast.error('Please enter a valid phone number');
+//       return;
+//     }
 
-    setLoading(true);
-    try {
-      const token = await grecaptcha.execute(
-        process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY!,
-        { action: 'login' }
-      );
+//     setLoading(true);
+//     try {
+//       const token = await grecaptcha.execute(
+//         process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY!,
+//         { action: 'login' }
+//       );
 
-      const res = await fetch('/api/verify-recaptcha', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
-      });
+//       const res = await fetch('/api/verify-recaptcha', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ token }),
+//       });
 
-      const data = await res.json();
+//       const data = await res.json();
 
-      if (!data.success || data.score < 0.5) {
-        toast.error('reCAPTCHA failed (bot suspicion)');
-        return;
-      }
+//       if (!data.success || data.score < 0.5) {
+//         toast.error('reCAPTCHA failed (bot suspicion)');
+//         return;
+//       }
 
-      toast.success('reCAPTCHA passed ✅');
+//       toast.success('reCAPTCHA passed ✅');
      
 
-    } catch (err) {
-      console.error(err);
-      toast.error('Something went wrong');
-    } finally {
-      setLoading(false);
-    }
-  };
+//     } catch (err) {
+//       console.error(err);
+//       toast.error('Something went wrong');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-        <h1 className="text-lg font-bold mb-4">Login with Phone</h1>
-        <PhoneInput
-          international
-          defaultCountry="IN" 
-          value={phone}
-          onChange={setPhone}
-          placeholder="Enter phone number"
-          className="w-full px-3 py-2 border rounded mb-4"
-        />
+//   return (
+//     <div className="min-h-screen flex items-center justify-center">
+//       <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
+//         <h1 className="text-lg font-bold mb-4">Login with Phone</h1>
+//         <PhoneInput
+//           international
+//           defaultCountry="IN" 
+//           value={phone}
+//           onChange={setPhone}
+//           placeholder="Enter phone number"
+//           className="w-full px-3 py-2 border rounded mb-4"
+//         />
 
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-        >
-          {loading ? 'Processing...' : 'Login'}
-        </button>
-      </div>
-    </div>
-  );
-}
+//         <button
+//           onClick={handleLogin}
+//           disabled={loading}
+//           className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+//         >
+//           {loading ? 'Processing...' : 'Login'}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
 
 
 
@@ -321,10 +319,6 @@ declare global {
           confirmationResult?: ConfirmationResult;
         }
       }
-    
-    
-
-
 
 export default function LoginPage() {
   const [phone, setPhone] = useState('');
@@ -332,12 +326,12 @@ export default function LoginPage() {
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const [loading, setLoading] = useState(false);
 
-  
+  // reCAPTCHA verifier setup (invisible)
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
         size: 'invisible',
-        callback: () => {
+        callback: (response: any) => {
           console.log('reCAPTCHA resolved');
         },
       });
@@ -440,7 +434,7 @@ export default function LoginPage() {
         )}
       </div>
 
-     
+      {/* reCAPTCHA container (invisible) */}
       <div id="recaptcha-container"></div>
     </div>
   );
